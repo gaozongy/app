@@ -69,7 +69,7 @@
     路由组件：
     Home首页路由组件、Search路由组件、Login登录路由、Register注册路由
     非路由组件：
-    Header、
+    Header、Header在上面四个路由组件里都出现了，不懂老师为啥说只出现在了首页和搜索页
     Footer【在首页、搜索页】，但是在登录|注册页面是没有的
     
 
