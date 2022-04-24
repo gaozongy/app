@@ -133,5 +133,32 @@
     8.2：路由传参有几种写法？
     params参数：属于路径当中的一部分，需要注意，在配置路由的时候，需要占位
     query参数：不属于路径当中的一部分，类似于ajax中的queryString，不需要占位
+
+8：路由传参相关面试题
+    1:路由传递参数（对象写法）path是否可以结合params参数一起使用?
+        不可以：不能这样书写，程序会崩掉；params参数只能结合name:'路由名称'使用
+
+    2:如何指定params参数可传可不传?
+        配置路由的时候，params参数已经占位了，但是路由跳转的时候没有传递params参数，路径会出问题
+        所以想指定params参数可传可不传可以在配置路由的时候，params参数进行占位的时候在后面加一个？就行了
+
+    3:params参数可以传递也可以不传递，但是如果传递是空串，如何解决？
+        params参数传递空字符串，会出现路径问题，就和上面没传params参数一样
+        如果params参数传递的是空字符串，可以使用undefined解决，就是在空的params参数后面加一个||undefined就行了
+        
+    4: 路由组件能不能传递props数据?
+        是可以的，有三种写法
+            //第一种：布尔值写法，props只支持传递params参数
+            // props:true
+            //第二种：对象写法，额外给路由组件传递一些props
+            // props:{a:1,b:2}
+            //第三种：函数写法（最常用）可以把params参数和query参数都传给路由组件
+            props:($route)=>{
+                return {keyWord: $route.params.keyWord,k:$route.query.k}
+            }
+     
+
+     
+
     
 
