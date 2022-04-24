@@ -18,9 +18,10 @@ export default new VueRouter({
             meta:{show:true}
         },
         {
-            path:'/search',
+            path:'/search/:keyWord',
             component:Search,
-            meta:{show:true}
+            meta:{show:true},
+            name:'search'
         }
         ,
         {
