@@ -21,7 +21,7 @@ requests.interceptors.response.use((res)=>{
     return res.data
 },(error)=>{
     //响应失败的回调函数
-    return Promise.reject(new Error('faile'))
+    return Promise.reject(new Error('false'))
 })
 
 
