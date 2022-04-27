@@ -61,6 +61,11 @@
     5.1：跨域问题
         什么是跨域：当一个请求url的协议,域名,端口三者之间任意一个与当前的url不同即为跨域
         http://localhost:8080/#/home-----当前页面url
-        http://39.98.123.211        -----被请求页面url
+        http://gmall-h5-api.atguigu.cn-----被请求页面url
 
         跨域解决方案：JSONP CROS 代理
+
+6：nprogress进度条的使用
+    start：进度条开始
+    done：进度条结束
+    进度条颜色可以修改的，需要修改他的样式
