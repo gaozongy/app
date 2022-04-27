@@ -6,6 +6,8 @@ import TypeNav from "@/pages/Home/TypeNav";
 Vue.component(TypeNav.name,TypeNav)
 //引入路由
 import router from '@/router'
+//引入仓库
+import store from './store'
 //测试一下
 import {reqCategoryList} from '@/api'
 reqCategoryList()
@@ -15,5 +17,7 @@ Vue.config.productionTip = false
 new Vue({
   render: h => h(App),
   //注册路由信息：当这里书写router的时候，组件身上都拥有$route和$router属性
-  router
+  router,
+  //注册组件：组件一旦注册，组件实例的身上就会出现一个$store属性
+  store
 }).$mount('#app')
