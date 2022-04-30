@@ -9,19 +9,19 @@
             <div class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId"
                  :class="{cur:currentIndex==index}">
               <h3 @mouseenter="changeIndex(index)">
-                <a href="">{{ c1.categoryName }}</a>
+                <a :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{ c1.categoryName }}</a>
                 <!--<router-link to="/search">{{c1.categoryName}}</router-link>-->
               </h3>
               <div class="item-list clearfix" :style="{display:currentIndex==index?'block':'none'}">
                 <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.categoryId">
                   <dl class="fore">
                     <dt>
-                      <a href="">{{ c2.categoryName }}</a>
+                      <a :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">{{ c2.categoryName }}</a>
                       <!--<router-link to="/search">{{c2.categoryName}}</router-link>-->
                     </dt>
                     <dd>
                       <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId">
-                        <a href="">{{ c3.categoryName }}</a>
+                        <a :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{ c3.categoryName }}</a>
                         <!--<router-link to="/search">{{c3.categoryName}}</router-link>-->
                       </em>
                     </dd>
@@ -100,8 +100,29 @@ export default {
     goSearch() {
       //最好的解决方法：编程式导航+事件委派
       //利用事件委派存在一些问题：1：你怎么知道点击的一定是a标签；2：如何获取参数【1、2、3级分类产品的名字、id】
-
-      this.$router.push('/search')
+      //在子节点a标签加上自定义属性data-categoryName，其余子节点没有
+      let element = event.target
+      //获取当前触发的事件的节点
+      //节点有一个dataset属性，可以获取节点的自定义属性与属性值
+      let {categoryname,category1id,category2id,category3id} = element.dataset
+      //如果标签身上拥有categoryname一定是a标签
+      if(categoryname){
+      //整理路由跳转的参数
+        let location = {name:'search'}
+        let query = {categoryName:categoryname}
+        //一级分类、二级分类、三级分类
+        if(category1id) {
+          query.category1Id = category1id
+        }else if(category2id) {
+          query.category2Id = category2id
+        }else {
+          query.category3Id = category3id
+        }
+        //整理完参数
+        location.query = query
+        //带着参数进行路由跳转
+        this.$router.push(location)
+      }
     }
   }
 }
