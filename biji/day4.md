@@ -6,6 +6,19 @@
 
 1）开发Search模块中的TypeNav商品分类菜单（过渡动画效果）
 过渡动画：前提是组件或者元素要有v-if或者v-show指令才可以进行过渡动画
+
 2)优化从服务器获取数据的性能
 在app根组件中请求服务器数据，因为app组件的mounted只执行一次
+
 3）合并params和query参数
+
+4）开发Home首页当中的ListContainer组件与Floor组件
+服务器返回的数据只有商品分类菜单是真的，其他接口的数据都是假的
+
+mock数据：模拟数据，需要用到插件mock.js
+mock使用步骤：
+1）在src文件夹下创建一个mock文件夹
+2）准备JSON假数据，不能有空格，有空格项目跑不起来
+3）把mock需要的图片放置到public文件夹中
+4)创建mockServe.js通过mockjs插件实现模拟数据
+5)把mockServe.js文件在入口文件中引入
