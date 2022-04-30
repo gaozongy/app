@@ -1,24 +1,28 @@
 <template>
   <div class="type-nav">
     <div class="container">
-    <!--事件委派-->
-      <div  @mouseleave="leaveIndex">
+      <!--事件委派-->
+      <div @mouseleave="leaveIndex">
         <h2 class="all">全部商品分类</h2>
         <div class="sort">
-          <div class="all-sort-list2">
-            <div class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId" :class="{cur:currentIndex==index}">
+          <div class="all-sort-list2" @click="goSearch">
+            <div class="item" v-for="(c1,index) in categoryList" :key="c1.categoryId"
+                 :class="{cur:currentIndex==index}">
               <h3 @mouseenter="changeIndex(index)">
-                <a href="">{{c1.categoryName}}</a>
+                <a href="">{{ c1.categoryName }}</a>
+                <!--<router-link to="/search">{{c1.categoryName}}</router-link>-->
               </h3>
               <div class="item-list clearfix" :style="{display:currentIndex==index?'block':'none'}">
                 <div class="subitem" v-for="(c2,index) in c1.categoryChild" :key="c2.categoryId">
                   <dl class="fore">
                     <dt>
-                      <a href="">{{c2.categoryName}}</a>
+                      <a href="">{{ c2.categoryName }}</a>
+                      <!--<router-link to="/search">{{c2.categoryName}}</router-link>-->
                     </dt>
                     <dd>
                       <em v-for="(c3,index) in c2.categoryChild" :key="c3.categoryId">
                         <a href="">{{ c3.categoryName }}</a>
+                        <!--<router-link to="/search">{{c3.categoryName}}</router-link>-->
                       </em>
                     </dd>
                   </dl>
@@ -43,17 +47,18 @@
 </template>
 
 <script>
-import {mapState} from  'vuex'
+import {mapState} from 'vuex'
 //引入方式：是把lodash全部功能函数引入
 // import _ from 'lodash'
 //按需引入
 import throttle from 'lodash/throttle'
+
 export default {
   name: 'TypeNav',
   data() {
     return {
       //存储用户鼠标移到哪一个一级分类上的索引值
-      currentIndex:-1
+      currentIndex: -1
     }
   },
   //组件挂载完毕，可以向服务器发请求
@@ -61,11 +66,11 @@ export default {
     //通知vuex发请求，获取数据，存储于仓库中
     this.$store.dispatch('categoryList')
   },
-  computed:{
+  computed: {
     ...mapState({
       //右侧需要的是一个函数，当使用这个计算属性的时候，右侧函数会立即执行一次
       //他会注入一盒参数state，这个参数就是大仓库的数据
-      categoryList:state=>state.home.categoryList
+      categoryList: state => state.home.categoryList
 
     })
   },
@@ -79,17 +84,24 @@ export default {
     //   this.currentIndex = index
     // },
     //节流
-    changeIndex:throttle(function (index) {
+    changeIndex: throttle(function (index) {
       //index：鼠标移到某一个一级分类的元素的索引值
       //正常情况：用户慢慢操作，，鼠标进入每一个一级分类h3，都会触发鼠标进入事件
       //非正常情况：用户操作很快，，本身全部的一级分类都应该触发鼠标进入事件，但是实际只有部分h3触发了鼠标进入事件
       //就是由于用户的行为过快，浏览器反应不过来，如果当前回调函数中有大量工作，就会出现卡顿
       this.currentIndex = index
-    },50),
+    }, 50),
     //一级分类鼠标移除的事件回调
     leaveIndex() {
       //鼠标移除currentIndex变为-1
       this.currentIndex = -1
+    },
+    //进行路由跳转的方法
+    goSearch() {
+      //最好的解决方法：编程式导航+事件委派
+      //利用事件委派存在一些问题：1：你怎么知道点击的一定是a标签；2：如何获取参数【1、2、3级分类产品的名字、id】
+
+      this.$router.push('/search')
     }
   }
 }
@@ -206,6 +218,7 @@ export default {
           }
         }
       }
+
       .cur {
         background-color: skyblue;
       }
