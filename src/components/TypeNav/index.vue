@@ -44,6 +44,10 @@
 
 <script>
 import {mapState} from  'vuex'
+//引入方式：是把lodash全部功能函数引入
+// import _ from 'lodash'
+//按需引入
+import throttle from 'lodash/throttle'
 export default {
   name: 'TypeNav',
   data() {
@@ -67,10 +71,21 @@ export default {
   },
   methods: {
     //鼠标移到一级分类上，修改响应式数据currentIndex属性
-    changeIndex(index) {
+    // changeIndex(index) {
+    //   //index：鼠标移到某一个一级分类的元素的索引值
+    //   //正常情况：用户慢慢操作，，鼠标进入每一个一级分类h3，都会触发鼠标进入事件
+    //   //非正常情况：用户操作很快，，本身全部的一级分类都应该触发鼠标进入事件，但是实际只有部分h3触发了鼠标进入事件
+    //   //就是由于用户的行为过快，浏览器反应不过来，如果当前回调函数中有大量工作，就会出现卡顿
+    //   this.currentIndex = index
+    // },
+    //节流
+    changeIndex:throttle(function (index) {
       //index：鼠标移到某一个一级分类的元素的索引值
+      //正常情况：用户慢慢操作，，鼠标进入每一个一级分类h3，都会触发鼠标进入事件
+      //非正常情况：用户操作很快，，本身全部的一级分类都应该触发鼠标进入事件，但是实际只有部分h3触发了鼠标进入事件
+      //就是由于用户的行为过快，浏览器反应不过来，如果当前回调函数中有大量工作，就会出现卡顿
       this.currentIndex = index
-    },
+    },50),
     //一级分类鼠标移除的事件回调
     leaveIndex() {
       //鼠标移除currentIndex变为-1
