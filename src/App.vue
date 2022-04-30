@@ -17,6 +17,10 @@ export default {
   components:{
     Header,
     Footer
+  },
+  mounted() {
+    //只从服务器获取一次三级列表的数据
+    this.$store.dispatch('categoryList')
   }
 }
 </script>
