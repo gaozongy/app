@@ -130,10 +130,13 @@ export default {
         } else {
           query.category3Id = category3id
         }
-        //整理完参数
-        location.query = query
-        //带着参数进行路由跳转
-        this.$router.push(location)
+        //如果路由跳转的时候有params参数也要一并带过去
+        if(this.$route.params) {
+          location.params = this.$route.params
+          location.query = query
+          //带着params和query参数进行路由跳转
+          this.$router.push(location)
+        }
       }
     },
     //当鼠标移入，让商品分类列表展示

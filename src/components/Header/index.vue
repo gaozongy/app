@@ -49,7 +49,7 @@ export default {
   name: '',
   data() {
     return {
-      keyWord:''
+      keyWord: ''
     }
   },
   methods: {
@@ -61,7 +61,15 @@ export default {
       //第二种：模板字符串
       // this.$router.push(`/search/${this.keyWord}?k=${this.keyWord.toUpperCase()}`)
       //第三种：对象写法(常用)
-      this.$router.push({name:'search',params:{keyWord:this.keyWord}, query:{k:this.keyWord.toUpperCase()}})
+      //如果有query参数也要带过去
+      if (this.$route.query) {
+        let location = {
+          name: 'search',
+          params: {keyWord: this.keyWord || undefined}
+        }
+        location.query = this.$route.query
+        this.$router.push(location)
+      }
     }
   }
 }
