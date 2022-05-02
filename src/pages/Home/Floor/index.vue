@@ -6,7 +6,7 @@
         <div class="fr">
           <ul class="nav-tabs clearfix">
             <li class="active" v-for="(nav,index) in list.navList" :key="index">
-              <a href="#tab1" data-toggle="tab">{{nav.text}}</a>
+              <a href="#tab1" data-toggle="tab">{{ nav.text }}</a>
             </li>
           </ul>
         </div>
@@ -21,19 +21,7 @@
               <img :src="list.imgUrl"/>
             </div>
             <div class="floorBanner">
-              <div class="swiper-container" ref="cur">
-                <div class="swiper-wrapper">
-                  <div class="swiper-slide" v-for="(carousel,index) in list.carouselList" :key="carousel.id">
-                    <img :src="carousel.imgUrl">
-                  </div>
-                </div>
-                <!-- 如果需要分页器 -->
-                <div class="swiper-pagination"></div>
-
-                <!-- 如果需要导航按钮 -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-              </div>
+              <Carousel :list="list.carouselList"/>
             </div>
             <div class="split">
               <span class="floor-x-line"></span>
@@ -64,28 +52,13 @@
 </template>
 
 <script>
-import Swiper from 'swiper'
-
 export default {
-  name: 'Floor',
+  name: '',
   props: ['list'],
   mounted() {
-      var mySwiper = new Swiper(this.$refs.cur, {
-            loop: true,//循环
-            //分页器
-            pagination: {
-              el: '.swiper-pagination',
-              //点击小球也切换图片
-              clickable: true
-            },
-            //前进后退按钮
-            navigation: {
-              nextEl: '.swiper-button-next',
-              prevEl: '.swiper-button-prev'
-            }
-          })
-    }
+
   }
+}
 </script>
 <style scoped lang="less">
 .floor {
