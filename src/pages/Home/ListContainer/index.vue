@@ -109,25 +109,54 @@ export default {
   mounted() {
     //派发action，通过vuex发起ajax请求，将数据存储在仓库中
     this.$store.dispatch('getBannerList')
-    var mySwiper = new Swiper(document.querySelector('.swiper-container'), {
-      loop: true,//循环
-      //分页器
-      pagination: {
-        el: '.swiper-pagination',
-        //点击小球也切换图片
-        clickable:true
-      },
-      //前进后退按钮
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev'
-      }
-    })
+    // setTimeout(() => {
+    //   var mySwiper = new Swiper(document.querySelector('.swiper-container'), {
+    //     loop: true,//循环
+    //     //分页器
+    //     pagination: {
+    //       el: '.swiper-pagination',
+    //       //点击小球也切换图片
+    //       clickable: true
+    //     },
+    //     //前进后退按钮
+    //     navigation: {
+    //       nextEl: '.swiper-button-next',
+    //       prevEl: '.swiper-button-prev'
+    //     }
+    //   })
+    // },1000)
+
   },
   computed: {
     ...mapState({
       bannerList: state => state.home.bannerList
     })
+  },
+  watch: {
+    //监听bannerList数据的变化：bannerList由空数组变为里面有四个元素的数组
+    bannerList: {
+      handler(newValue, oldValue) {
+        //通过watch监听bannerList属性的属性值的变化，若handler执行，
+        //代表bannerList已有数据了，但是不能保证bannerList里面数据已经完整了
+        //nextTick:在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
+        this.$nextTick(() => {
+          var mySwiper = new Swiper(document.querySelector('.swiper-container'), {
+            loop: true,//循环
+            //分页器
+            pagination: {
+              el: '.swiper-pagination',
+              //点击小球也切换图片
+              clickable: true
+            },
+            //前进后退按钮
+            navigation: {
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev'
+            }
+          })
+        })
+      }
+    }
   }
 }
 </script>
