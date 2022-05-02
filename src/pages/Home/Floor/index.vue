@@ -94,7 +94,8 @@
 
 <script>
 export default {
-  name:'Floor'
+  name:'Floor',
+  props:['list']
 }
 </script>
 <style scoped lang="less">
