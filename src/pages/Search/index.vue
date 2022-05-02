@@ -60,11 +60,12 @@
                   <div class="price">
                     <strong>
                       <em>¥</em>
-                      <i>{{good.price}}</i>
+                      <i>{{ good.price }}</i>
                     </strong>
                   </div>
                   <div class="attr">
-                    <a target="_blank" href="item.html" title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】">{{good.title}}</a>
+                    <a target="_blank" href="item.html"
+                       title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】">{{ good.title }}</a>
                   </div>
                   <div class="commit">
                     <i class="command">已有<span>2000</span>人评价</i>
@@ -116,19 +117,56 @@
 <script>
 import SearchSelector from './SearchSelector/SearchSelector'
 import {mapGetters} from 'vuex'
+
 export default {
   name: 'Search',
-
+  data() {
+    return {
+      searchParams: {
+        //一级分类的id
+        "category1Id": "",
+        //二级分类的id
+        "category2Id": "",
+        //三级分类的id
+        "category3Id": "",
+        //分类的名字
+        "categoryName": "",
+        //关键字
+        "keyword": "",
+        //排序
+        "order": "",
+        //分页器用的：代表的是当前是第几页
+        "pageNo": 1,
+        //代表的是每一页展示的数据个数
+        "pageSize": 10,
+        //平台售卖属性操作带的参数
+        "props": [],
+        //品牌
+        "trademark": ""
+      }
+    }
+  },
   components: {
     SearchSelector
   },
+  beforeMount() {
+    //Object.assign：ES6新增语法，合并对象
+    Object.assign(this.searchParams,this.$route.query,this.$route.params)
+  },
   mounted() {
-    //先测试接口返回的数据格式
-    this.$store.dispatch('getSearchList', {})
+    this.getData()
   },
   computed: {
     //mapGetters里面的写法：传递的数组，因为getters计算是没有划分模块的
     ...mapGetters(['goodsList'])
+  },
+  methods: {
+    //向服务器发请求获取search模块的数据（根据参数的不同返回不同的数据进行展示）
+    //把这次请求封装成一个函数，当你需要的时候调用即可
+    getData() {
+      //先测试接口返回的数据格式
+      this.$store.dispatch('getSearchList',this.searchParams)
+    }
   }
 }
 </script>
