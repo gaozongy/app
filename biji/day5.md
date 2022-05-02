@@ -16,3 +16,9 @@ $nextTick:在下次 DOM 更新循环结束之后执行延迟回调。在修改�
     vuex
 
 3)把首页当中的轮播图搞成一个共用全局组件
+
+4)search模块开发
+1：静态页面 + 静态组件拆分
+2：发请求（API）
+3：vuex(state + actions + mutations)
+4:组件获取仓库数据，动态展示
