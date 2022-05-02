@@ -4,15 +4,15 @@
 3）路由跳转：声明式导航、编程式导航
 编程式导航采用自定义属性
 
-1）开发Search模块中的TypeNav商品分类菜单（过渡动画效果）
+1：开发Search模块中的TypeNav商品分类菜单（过渡动画效果）
 过渡动画：前提是组件或者元素要有v-if或者v-show指令才可以进行过渡动画
 
-2)优化从服务器获取数据的性能
+2：优化从服务器获取数据的性能
 在app根组件中请求服务器数据，因为app组件的mounted只执行一次
 
-3）合并params和query参数
+3：合并params和query参数
 
-4）开发Home首页当中的ListContainer组件与Floor组件
+4：开发Home首页当中的ListContainer组件与Floor组件
 服务器返回的数据只有商品分类菜单是真的，其他接口的数据都是假的
 
 mock数据：模拟数据，需要用到插件mock.js
@@ -22,3 +22,8 @@ mock使用步骤：
 3）把mock需要的图片放置到public文件夹中
 4)创建mockServe.js通过mockjs插件实现模拟数据
 5)把mockServe.js文件在入口文件中引入
+
+
+5：ListContainer组件开发重点？
+安装swiper插件，不要安装最新版本可能会有问题，此处安装swiper@5
+
