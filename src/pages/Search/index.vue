@@ -11,13 +11,17 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
+            <!--分类的面包屑-->
             <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
+            <!--关键字的面包屑-->
             <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">×</i></li>
+            <!--品牌的面包屑-->
+            <li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.split(':')[1]}}<i @click="removeTradeMark">×</i></li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector/>
+        <SearchSelector @trademarkInfo="trademarkInfo"/>
 
         <!--details-->
         <div class="details clearfix">
@@ -185,6 +189,15 @@ export default {
       if(this.$route.query) {
         this.$router.push({name:'search',query:this.$route.query})
       }
+    },
+    //自定义事件的回调
+    trademarkInfo(trademark) {
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`
+      this.getData()
+    },
+    removeTradeMark() {
+      this.searchParams.trademark = undefined
+      this.getData()
     }
   },
   watch: {
