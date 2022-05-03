@@ -8,3 +8,13 @@
     插槽：父子
     pubsub-js：万能，但是几乎不在vue中使用
     $bus：全局事件总线
+
+3：排序操作
+    1: 综合,2: 价格 asc: 升序,desc: 降序  
+    示例: "1:desc"
+    order的属性值写法：
+    1:asc
+    2:desc
+    3:asc
+    4:desc
+

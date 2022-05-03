@@ -12,13 +12,17 @@
           </ul>
           <ul class="fl sui-tag">
             <!--分类的面包屑-->
-            <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i
+                @click="removeCategoryName">×</i></li>
             <!--关键字的面包屑-->
-            <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">×</i></li>
+            <li class="with-x" v-if="searchParams.keyword">{{ searchParams.keyword }}<i @click="removeKeyword">×</i>
+            </li>
             <!--品牌的面包屑-->
-            <li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.split(':')[1]}}<i @click="removeTradeMark">×</i></li>
+            <li class="with-x" v-if="searchParams.trademark">{{ searchParams.trademark.split(':')[1] }}<i
+                @click="removeTradeMark">×</i></li>
             <!--平台售卖属性值的展示-->
-            <li class="with-x" v-for="(attrValue,index) in searchParams.props" :key="index">{{attrValue.split(':')[1]}}<i @click="removeAttr(index)">×</i></li>
+            <li class="with-x" v-for="(attrValue,index) in searchParams.props" :key="index">
+              {{ attrValue.split(':')[1] }}<i @click="removeAttr(index)">×</i></li>
           </ul>
         </div>
 
@@ -29,25 +33,13 @@
         <div class="details clearfix">
           <div class="sui-navbar">
             <div class="navbar-inner filter">
-              <!--价格结构-->
+              <!--排序结构-->
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{active:isOne}">
+                  <a>综合<span v-show="isOne" class="iconfont" :class="{'icon-up':isAsc,'icon-down':isDesc}"></span></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{active:isTwo}">
+                  <a>价格<span v-show="isTwo" class="iconfont" :class="{'icon-up':isAsc,'icon-down':isDesc}"></span></a>
                 </li>
               </ul>
             </div>
@@ -137,8 +129,8 @@ export default {
         "categoryName": "",
         //关键字
         "keyword": "",
-        //排序
-        "order": "",
+        //排序:初始状态为综合降序
+        "order": "1:asc",
         //分页器用的：代表的是当前是第几页
         "pageNo": 1,
         //代表的是每一页展示的数据个数
@@ -155,21 +147,33 @@ export default {
   },
   beforeMount() {
     //Object.assign：ES6新增语法，合并对象
-    Object.assign(this.searchParams,this.$route.query,this.$route.params)
+    Object.assign(this.searchParams, this.$route.query, this.$route.params)
   },
   mounted() {
     this.getData()
   },
   computed: {
     //mapGetters里面的写法：传递的数组，因为getters计算是没有划分模块的
-    ...mapGetters(['goodsList'])
+    ...mapGetters(['goodsList']),
+    isOne() {
+      return this.searchParams.order.indexOf('1') != -1
+    },
+    isTwo() {
+      return this.searchParams.order.indexOf('2') != -1
+    },
+    isAsc() {
+      return this.searchParams.order.indexOf('asc')!=-1
+    },
+    isDesc() {
+      return this.searchParams.order.indexOf('desc')!=-1
+    },
   },
   methods: {
     //向服务器发请求获取search模块的数据（根据参数的不同返回不同的数据进行展示）
     //把这次请求封装成一个函数，当你需要的时候调用即可
     getData() {
       //先测试接口返回的数据格式
-      this.$store.dispatch('getSearchList',this.searchParams)
+      this.$store.dispatch('getSearchList', this.searchParams)
     },
     removeCategoryName() {
       this.searchParams.categoryName = undefined
@@ -178,8 +182,8 @@ export default {
       this.searchParams.category3Id = undefined
       this.getData()
       //地址栏也需要更改
-      if(this.$route.params) {
-        this.$router.push({name:'search',params:this.$route.params})
+      if (this.$route.params) {
+        this.$router.push({name: 'search', params: this.$route.params})
       }
     },
     removeKeyword() {
@@ -188,8 +192,8 @@ export default {
       //通知兄弟组件Header清除关键字
       this.$bus.$emit('clear')
       //地址栏也需要更改
-      if(this.$route.query) {
-        this.$router.push({name:'search',query:this.$route.query})
+      if (this.$route.query) {
+        this.$router.push({name: 'search', query: this.$route.query})
       }
     },
     //自定义事件的回调
@@ -202,23 +206,23 @@ export default {
       this.getData()
     },
     //售卖属性值自定义事件的回调
-    attrInfo(attr,attrValue) {
+    attrInfo(attr, attrValue) {
       let props = `${attr.attrId}:${attrValue}:${attr.attrName}`
       //数组去重
-      if(this.searchParams.props.indexOf(props)==-1) {
+      if (this.searchParams.props.indexOf(props) == -1) {
         this.searchParams.props.push(props)
       }
       this.getData()
     },
     removeAttr(index) {
-      this.searchParams.props.splice(index,1)
+      this.searchParams.props.splice(index, 1)
       this.getData()
     }
   },
   watch: {
     //监听路由信息是否发生变化，如果发生变化。1：先整理带给服务器的参数。2：再发起ajax请求
-    $route(newValue,oldValue) {
-      Object.assign(this.searchParams,this.$route.query,this.$route.params)
+    $route(newValue, oldValue) {
+      Object.assign(this.searchParams, this.$route.query, this.$route.params)
       this.getData()
       //每次请求完毕，把1、2、3级分类的id置空
       this.searchParams.category1Id = undefined
