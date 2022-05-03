@@ -167,6 +167,17 @@ export default {
       //先测试接口返回的数据格式
       this.$store.dispatch('getSearchList',this.searchParams)
     }
+  },
+  watch: {
+    //监听路由信息是否发生变化，如果发生变化。1：先整理带给服务器的参数。2：再发起ajax请求
+    $route(newValue,oldValue) {
+      Object.assign(this.searchParams,this.$route.query,this.$route.params)
+      this.getData()
+      //每次请求完毕，把1、2、3级分类的id置空
+      this.searchParams.category1Id = ''
+      this.searchParams.category2Id = ''
+      this.searchParams.category3Id = ''
+    }
   }
 }
 </script>

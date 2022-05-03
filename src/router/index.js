@@ -42,7 +42,7 @@ export default new VueRouter({
             meta: {show: true}
         },
         {
-            path: '/search/:keyWord?',
+            path: '/search/:keyword?',
             component: Search,
             meta: {show: true},
             name: 'search',
@@ -53,7 +53,7 @@ export default new VueRouter({
             // props:{a:1,b:2}
             //第三种：函数写法（最常用）可以把params参数和query参数都传给路由组件
             props: ($route) => {
-                return {keyWord: $route.params.keyWord, k: $route.query.k}
+                return {keyword: $route.params.keyword, k: $route.query.k}
             }
 
         }
