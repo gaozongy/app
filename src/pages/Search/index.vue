@@ -35,10 +35,10 @@
             <div class="navbar-inner filter">
               <!--排序结构-->
               <ul class="sui-nav">
-                <li :class="{active:isOne}">
+                <li :class="{active:isOne}" @click="changeOrder('1')">
                   <a>综合<span v-show="isOne" class="iconfont" :class="{'icon-up':isAsc,'icon-down':isDesc}"></span></a>
                 </li>
-                <li :class="{active:isTwo}">
+                <li :class="{active:isTwo}" @click="changeOrder('2')">
                   <a>价格<span v-show="isTwo" class="iconfont" :class="{'icon-up':isAsc,'icon-down':isDesc}"></span></a>
                 </li>
               </ul>
@@ -75,35 +75,7 @@
             </ul>
           </div>
           <!--分页器-->
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+          <Pagination/>
         </div>
       </div>
     </div>
@@ -130,7 +102,7 @@ export default {
         //关键字
         "keyword": "",
         //排序:初始状态为综合降序
-        "order": "1:asc",
+        "order": "1:desc",
         //分页器用的：代表的是当前是第几页
         "pageNo": 1,
         //代表的是每一页展示的数据个数
@@ -216,6 +188,26 @@ export default {
     },
     removeAttr(index) {
       this.searchParams.props.splice(index, 1)
+      this.getData()
+    },
+    //排序操作
+    changeOrder(flag) {
+      let originOrder = this.searchParams.order
+      //originFlag:起始点的是综合还是价格
+      let originFlag = this.searchParams.order.split(':')[0]
+      //originSort：起始状态是升序还是降序
+      let originSort = this.searchParams.order.split(':')[1]
+      //newOrder：新的order属性值
+      let newOrder = ''
+      //点击的是综合
+      if(flag==originFlag) {
+        newOrder = `${originFlag}:${originSort=='desc'?'asc':'desc'}`
+      }else{
+        //点击是价格
+        newOrder = `${flag}:${'desc'}`
+      }
+      //将新的order赋予searchParams
+      this.searchParams.order = newOrder
       this.getData()
     }
   },
