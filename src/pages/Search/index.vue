@@ -11,10 +11,7 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
           </ul>
         </div>
 
@@ -166,6 +163,17 @@ export default {
     getData() {
       //先测试接口返回的数据格式
       this.$store.dispatch('getSearchList',this.searchParams)
+    },
+    removeCategoryName() {
+      this.searchParams.categoryName = undefined
+      this.searchParams.category1Id = undefined
+      this.searchParams.category2Id = undefined
+      this.searchParams.category3Id = undefined
+      this.getData()
+      //地址栏也需要更改
+      if(this.$route.params) {
+        this.$router.push({name:'search',params:this.$route.params})
+      }
     }
   },
   watch: {
@@ -174,9 +182,9 @@ export default {
       Object.assign(this.searchParams,this.$route.query,this.$route.params)
       this.getData()
       //每次请求完毕，把1、2、3级分类的id置空
-      this.searchParams.category1Id = ''
-      this.searchParams.category2Id = ''
-      this.searchParams.category3Id = ''
+      this.searchParams.category1Id = undefined
+      this.searchParams.category2Id = undefined
+      this.searchParams.category3Id = undefined
     }
   }
 }
