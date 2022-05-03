@@ -17,11 +17,13 @@
             <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">×</i></li>
             <!--品牌的面包屑-->
             <li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.split(':')[1]}}<i @click="removeTradeMark">×</i></li>
+            <!--平台售卖属性值的展示-->
+            <li class="with-x" v-for="(attrValue,index) in searchParams.props" :key="index">{{attrValue.split(':')[1]}}<i @click="removeAttr(index)">×</i></li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @trademarkInfo="trademarkInfo"/>
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo"/>
 
         <!--details-->
         <div class="details clearfix">
@@ -197,6 +199,19 @@ export default {
     },
     removeTradeMark() {
       this.searchParams.trademark = undefined
+      this.getData()
+    },
+    //售卖属性值自定义事件的回调
+    attrInfo(attr,attrValue) {
+      let props = `${attr.attrId}:${attrValue}:${attr.attrName}`
+      //数组去重
+      if(this.searchParams.props.indexOf(props)==-1) {
+        this.searchParams.props.push(props)
+      }
+      this.getData()
+    },
+    removeAttr(index) {
+      this.searchParams.props.splice(index,1)
       this.getData()
     }
   },
