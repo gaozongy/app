@@ -12,6 +12,7 @@
           </ul>
           <ul class="fl sui-tag">
             <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
+            <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">×</i></li>
           </ul>
         </div>
 
@@ -173,6 +174,16 @@ export default {
       //地址栏也需要更改
       if(this.$route.params) {
         this.$router.push({name:'search',params:this.$route.params})
+      }
+    },
+    removeKeyword() {
+      this.searchParams.keyword = undefined
+      this.getData()
+      //通知兄弟组件Header清除关键字
+      this.$bus.$emit('clear')
+      //地址栏也需要更改
+      if(this.$route.query) {
+        this.$router.push({name:'search',query:this.$route.query})
       }
     }
   },
