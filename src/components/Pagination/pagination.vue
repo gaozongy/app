@@ -1,7 +1,10 @@
 <template>
   <div class="pagination">
-    <button :disabled="pageNo===1" @click="$emit('getPageNo',pageNo-1)">上一页</button>
-    <button v-if="startNumAndEndNum.start > 1" @click="$emit('getPageNo',1)" :class="{active:pageNo==1}">1</button>
+    <button :disabled="pageNo===1"
+            @click="$emit('getPageNo',pageNo-1)">上一页</button>
+    <button v-if="startNumAndEndNum.start > 1"
+            @click="$emit('getPageNo',1)"
+            :class="{active:pageNo==1}">1</button>
     <button v-if="startNumAndEndNum.start > 2">···</button>
 
     <!--中间部分-->
@@ -13,10 +16,12 @@
     </button>
 
     <button v-if="startNumAndEndNum.end < totalPage - 1">···</button>
-    <button v-if="startNumAndEndNum.end < totalPage" @click="$emit('getPageNo',totalPage)"
+    <button v-if="startNumAndEndNum.end < totalPage"
+            @click="$emit('getPageNo',totalPage)"
             :class="{active:pageNo==totalPage}">{{ totalPage }}
     </button>
-    <button :disabled="pageNo===totalPage" @click="$emit('getPageNo',pageNo+1)">下一页</button>
+    <button :disabled="pageNo===totalPage"
+            @click="$emit('getPageNo',pageNo+1)">下一页</button>
 
     <button style="margin-left: 30px">共 {{ total }} 条</button>
   </div>
@@ -41,16 +46,20 @@ export default {
       if (continues > totalPage) {
         start = 1
         end = totalPage
+        //假如：一共有99条数据，每一页3条数据（一共33页）
       } else {
         //正常现象：连续的页码是5，总页数一定是大于5的
+        //parseInt(continues / 2)代表：连续页码数是5|7|9都适用
         start = pageNo - parseInt(continues / 2)
         end = pageNo + parseInt(continues / 2)
         //start小于0或者出现负数
+        //走这个判断：当前页一定是第1页或者第2页
         if (start < 1) {
           start = 1
           end = continues
         }
         //end大于totalPage
+        //走这个判断：当前页一定是第32页或者33页
         if (end > totalPage) {
           end = totalPage
           start = totalPage - continues + 1
