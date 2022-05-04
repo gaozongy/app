@@ -34,3 +34,6 @@ export const reqFloorList = ()=>mockRequests.get('/floor')
 */
 //此接口给服务器传递默认参数params，至少是一个空对象，不然请求会失败
 export const reqGetSearchInfo = (params)=>requests({url:'/list',method:'post',data:params})
+
+//获取产品详情接口 地址：/api/item/{ skuId }   请求方式：get   参数：请求要带id参数
+export const reqGoodsInfo = (skuId)=>requests({url:`/item/${skuId}`,method:'get'})
