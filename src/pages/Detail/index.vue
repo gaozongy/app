@@ -65,7 +65,12 @@
               <div class="choosed"></div>
               <dl v-for="(spuSaleAttr,index) in spuSaleAttrList" :key="spuSaleAttr.id">
                 <dt class="title">{{spuSaleAttr.saleAttrName}}</dt>
-                <dd changepirce="0" :class="{active:spuSaleAttrValue.isChecked==1}" v-for="(spuSaleAttrValue,index) in spuSaleAttr.spuSaleAttrValueList" :key="spuSaleAttrValue.id">
+                <dd changepirce="0"
+                    :class="{active:spuSaleAttrValue.isChecked==1}"
+                    v-for="(spuSaleAttrValue,index) in spuSaleAttr.spuSaleAttrValueList"
+                    :key="spuSaleAttrValue.id"
+                    @click="changeActive(spuSaleAttrValue,spuSaleAttr.spuSaleAttrValueList)"
+                >
                   {{ spuSaleAttrValue.saleAttrValueName }}</dd>
               </dl>
             </div>
@@ -347,6 +352,11 @@
       //给子组件的数据
       skuImageList() {
         return this.skuInfo.skuImageList || []
+      }
+    },
+    methods: {
+      changeActive(saleAttrValue,arr) {
+
       }
     }
   }
