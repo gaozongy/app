@@ -388,7 +388,10 @@ export default {
       try {
         await this.$store.dispatch('addOrUpdateShopCart',{
           skuId:this.$route.params.skuid,
-          skuNum:this.skuNum})
+          skuNum:this.skuNum
+        })
+        //加入购物车成功，进行路由跳转
+        this.$router.push({name: 'addcartsuccess'})
       }catch (error) {
         alert(error.message)
       }
