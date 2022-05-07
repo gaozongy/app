@@ -390,8 +390,10 @@ export default {
           skuId:this.$route.params.skuid,
           skuNum:this.skuNum
         })
-        //加入购物车成功，进行路由跳转
-        this.$router.push({name: 'addcartsuccess'})
+        //加入购物车成功，进行路由跳转，简单的数据通过query参数传递，产品的信息比较复杂，通过会话存储传递，好处是：不持久化，会话结束就消失
+        //本地存储和会话存储存的都是字符串
+        sessionStorage.setItem('SKUINFO',JSON.stringify(this.skuInfo))
+        this.$router.push({name: 'addcartsuccess',query:{skuNum:this.skuNum}})
       }catch (error) {
         alert(error.message)
       }
