@@ -381,11 +381,18 @@ export default {
       }
     },
     //加入购物车的回调
-    addShopcar() {
+    async addShopcar() {
       //1:发请求
-      this.$store.dispatch('addOrUpdateShopCart',{skuId:this.$route.params.skuid,skuNum:this.skuNum})
       //2：服务器存储成功-------进行路由跳转并带参数；
       //   失败--------给用户提示
+      try {
+        await this.$store.dispatch('addOrUpdateShopCart',{
+          skuId:this.$route.params.skuid,
+          skuNum:this.skuNum})
+      }catch (error) {
+        alert(error.message)
+      }
+
     }
   }
 }
