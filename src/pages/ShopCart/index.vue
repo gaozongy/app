@@ -23,9 +23,9 @@
             <span class="price">{{cart.skuPrice}}.00</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input autocomplete="off" type="text" minnum="1" class="itxt" :value="cart.skuNum">
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a href="javascript:void(0)" class="mins" @click="handler('minus',-1,cart)">-</a>
+            <input autocomplete="off" type="text" minnum="1" class="itxt" :value="cart.skuNum" @change="handler('change',$event.target.value*1,cart)">
+            <a href="javascript:void(0)" class="plus" @click="handler('add',1,cart)">+</a>
           </li>
           <li class="cart-list-con6">
             <span class="sum">{{cart.skuNum * cart.skuPrice}}</span>
@@ -74,6 +74,9 @@ export default {
     methods: {
       getData() {
         this.$store.dispatch('getCartList')
+      },
+      handler(type,disNum,cart) {
+        console.log(type,disNum,cart)
       }
     },
   computed: {
