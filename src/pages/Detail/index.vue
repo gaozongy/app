@@ -356,7 +356,12 @@
     },
     methods: {
       changeActive(saleAttrValue,arr) {
-
+        arr.forEach(item=>{
+          //遍历全部的售卖属性的属性值isChecked全为0
+          item.isChecked = 0
+          //点击的售卖属性的属性值isChecked为1
+          saleAttrValue.isChecked = 1
+        })
       }
     }
   }
