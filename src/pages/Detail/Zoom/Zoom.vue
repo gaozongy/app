@@ -17,6 +17,12 @@
       imgObj() {
         return this.skuImageList[0] || {}
       }
+    },
+    mounted() {
+      //全局事件总线获取兄弟组件传递过来的索引值
+      this.$bus.$on('getIndex',(index)=>{
+        console.log(index)
+      })
     }
   }
 </script>
