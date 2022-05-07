@@ -1,4 +1,4 @@
-import {reqGoodsInfo} from "@/api";
+import {reqGoodsInfo,reqAddOrUpdateShopCart} from "@/api";
 
 const state = {
     goodInfo:{}
@@ -14,6 +14,10 @@ const actions = {
         if(result.code==200){
             commit('GETGOODINFO',result.data)
         }
+    },
+    //将产品添加到购物车
+    async addOrUpdateShopCart({commit},{skuId,skuNum}) {
+        let result = await reqAddOrUpdateShopCart(skuId,skuNum)
     }
 }
 const getters = {

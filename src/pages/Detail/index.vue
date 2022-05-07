@@ -82,7 +82,9 @@
                 <a href="javascript:" class="mins" @click="skuNum>1?skuNum--:skuNum=1">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <!--以前的路由跳转，从A路由跳转到B路由；这里在加入购物车，路由跳转之前，发请求
+                把购买的产品的信息通过请求的形式通知服务器，服务器进行存储-->
+                <a @click="addShopcar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -377,6 +379,13 @@ export default {
         //处理用户输入的数据是小数点的
         this.skuNum = parseInt(value)
       }
+    },
+    //加入购物车的回调
+    addShopcar() {
+      //1:发请求
+      this.$store.dispatch('addOrUpdateShopCart',{skuId:this.$route.params.skuid,skuNum:this.skuNum})
+      //2：服务器存储成功-------进行路由跳转并带参数；
+      //   失败--------给用户提示
     }
   }
 }
