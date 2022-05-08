@@ -13,7 +13,10 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="(cart,index) in cartInfoList" :key="cart.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="cart.isChecked==1">
+            <input type="checkbox" name="chk_list"
+                   :checked="cart.isChecked==1"
+                   @change="updateChecked(cart,$event)"
+            >
           </li>
           <li class="cart-list-con2">
             <img :src="cart.imgUrl">
@@ -79,8 +82,8 @@ export default {
     getData() {
       this.$store.dispatch('getCartList')
     },
-    //type是为了区分+-和数量这三个元素，disNum代表+-和数量，cart代表产品
-    async handler(type, disNum, cart) {
+    //type是为了区分+-和数量这三个元素，disNum代表+-和数量，cart代表产品(节流)
+    handler: throttle(async function (type, disNum, cart) {
       //发请求，修改数量
       switch (type) {
           //加号
@@ -112,13 +115,23 @@ export default {
         this.getData()
       } catch (error) {
       }
-    },
+    }, 1000),
     //删除商品操作
     async deleteCartById(cart) {
       try {
         await this.$store.dispatch('deleteCartListBySkuId', cart.skuId)
         this.getData()
       } catch (error) {
+        alert(error.message)
+      }
+    },
+    //修改产品的勾选状态
+    async updateChecked(cart,event) {
+      try {
+        let isChecked = event.target.checked ? '1' : '0'
+        await this.$store.dispatch('UpdateCheckedById',{skuId:cart.skuId,isChecked})
+        this.getData()
+      }catch (error){
         alert(error.message)
       }
     }
