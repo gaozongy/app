@@ -91,7 +91,7 @@ export default {
     //用户注册
     userRegister() {
       const {phone, code, password, password1} = this
-      (phone && code && password == password1) && this.$store.dispatch('userRegister', {phone, code, password})
+      phone && code && password == password1 && this.$store.dispatch('userRegister', {phone, code, password})
     }
   }
 }
