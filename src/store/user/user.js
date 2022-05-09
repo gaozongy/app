@@ -1,11 +1,15 @@
-import {reqGetCode, reqUserRegister} from "@/api";
+import {reqGetCode, reqUserRegister,reqUserLogin} from "@/api";
 //登录与注册
 const state = {
-    code:''
+    code:'',
+    token:''
 }
 const mutations = {
     GETCODE(state,code) {
         state.code = code
+    },
+    USERLOGIN(state,token) {
+        state.token = token
     }
 }
 const actions = {
@@ -25,7 +29,18 @@ const actions = {
         if(result.code==200) {
             return 'ok'
         }else{
-            return Promise.reject(new Error(faile))
+            return Promise.reject(new Error('faile'))
+        }
+    },
+    //登录业务
+    async userLogin({commit},data) {
+        let result = await reqUserLogin(data)
+        //服务器下发的token是用户的唯一标识，拿着token去找服务器要用户名密码
+        if(result.code==200) {
+            commit('USERLOGIN',result.data.token)
+            return 'ok'
+        }else{
+            return Promise.reject(new Error('faile'))
         }
     }
 }
