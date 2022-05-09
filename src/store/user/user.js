@@ -1,8 +1,9 @@
 import {reqGetCode, reqUserRegister,reqUserLogin,reqUserInfo} from "@/api";
+import {setToken,getToken} from "@/utils/token";
 //登录与注册
 const state = {
     code:'',
-    token:'',
+    token:getToken(),
     userInfo:{}
 }
 const mutations = {
@@ -41,7 +42,11 @@ const actions = {
         let result = await reqUserLogin(data)
         //服务器下发的token是用户的唯一标识，拿着token去找服务器要用户名密码
         if(result.code==200) {
+            //用户已经登陆成功并且获取到token
             commit('USERLOGIN',result.data.token)
+            //持久化存储token
+            // localStorage.setItem('TOKEN',result.data.token)
+            setToken(result.data.token)
             return 'ok'
         }else{
             return Promise.reject(new Error('faile'))
