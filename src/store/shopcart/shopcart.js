@@ -46,6 +46,15 @@ const actions = {
         //只要全部的p1|p2...都成功，返回的结果为成功
         //如果有一个失败，返回的即为失败
         return Promise.all(PromiseAll)
+    },
+    //修改全部产品的状态
+    updateAllCartIsChecked({dispatch,state},isChecked) {
+        let promiseAll = []
+        state.cartList[0].cartInfoList.forEach((item)=>{
+            let promise = dispatch('UpdateCheckedById',{skuId:item.skuId,isChecked})
+            promiseAll.push(promise)
+        })
+        return Promise.all(promiseAll)
     }
 }
 const getters = {
