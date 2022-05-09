@@ -41,10 +41,40 @@ let router =  new VueRouter({
     }
 })
 //全局路由守卫
-router.beforeEach((to,from,next)=>{
+router.beforeEach(async (to,from,next)=>{
     //to:去哪里；from:从哪来；next:放行函数
-    next()
-    console.log(store)
+    // next()
+    let token = store.state.user.token
+    //用户信息
+    let name = store.state.user.userInfo.name
+    //已登录
+    if(token) {
+        //已登录，还去登陆页面，让他停留在首页
+        if(to.path=='/login') {
+            next('/home')
+        }else {
+            //已登录，去除了login的其他页面,如果有用户信息就放行
+            if(name) {
+                next()
+            }else {
+                //如果没有用户信息,派发action让仓库存储用户信息再跳转
+                try {
+                    //获取用户信息成功放行
+                    await store.dispatch('getUserInfo')
+                    next()
+                }catch(error){
+                    //token过期了失效了，重新登陆
+                    //清除token
+                    await store.dispatch('userLoginOut')
+                    next('/login')
+                }
+            }
+        }
+        //未登录
+        next()
+    }else {
+
+    }
 })
 
 
