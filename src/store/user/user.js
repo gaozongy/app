@@ -1,8 +1,9 @@
-import {reqGetCode, reqUserRegister,reqUserLogin} from "@/api";
+import {reqGetCode, reqUserRegister,reqUserLogin,reqUserInfo} from "@/api";
 //登录与注册
 const state = {
     code:'',
-    token:''
+    token:'',
+    userInfo:{}
 }
 const mutations = {
     GETCODE(state,code) {
@@ -10,6 +11,9 @@ const mutations = {
     },
     USERLOGIN(state,token) {
         state.token = token
+    },
+    GETUSERINFO(state,userInfo) {
+        state.userInfo = userInfo
     }
 }
 const actions = {
@@ -41,6 +45,13 @@ const actions = {
             return 'ok'
         }else{
             return Promise.reject(new Error('faile'))
+        }
+    },
+    //获取用户信息
+    async getUserInfo({commit}) {
+       let result = await reqUserInfo()
+        if(result.code==200){
+            commit('GETUSERINFO',result.data)
         }
     }
 }
