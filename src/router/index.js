@@ -1,6 +1,8 @@
 //配置路由的地方
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+//引入store
+import store from '@/store'
 //使用插件
 Vue.use(VueRouter)
 //引入路由组件
@@ -30,7 +32,7 @@ VueRouter.prototype.replace = function(location,resolve,reject) {
     }
 }
 //配置路由
-export default new VueRouter({
+let router =  new VueRouter({
     //配置路由
     routes,
     scrollBehavior (to, from, savedPosition) {
@@ -38,3 +40,12 @@ export default new VueRouter({
         return {y: 0}
     }
 })
+//全局路由守卫
+router.beforeEach((to,from,next)=>{
+    //to:去哪里；from:从哪来；next:放行函数
+    next()
+    console.log(store)
+})
+
+
+export default router
