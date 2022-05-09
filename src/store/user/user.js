@@ -1,5 +1,5 @@
-import {reqGetCode, reqUserRegister,reqUserLogin,reqUserInfo} from "@/api";
-import {setToken,getToken} from "@/utils/token";
+import {reqGetCode, reqUserRegister,reqUserLogin,reqUserInfo,reqLoginOut} from "@/api";
+import {setToken,getToken,removeToken} from "@/utils/token";
 //登录与注册
 const state = {
     code:'',
@@ -15,6 +15,13 @@ const mutations = {
     },
     GETUSERINFO(state,userInfo) {
         state.userInfo = userInfo
+    },
+    //清除本地数据
+    CLEAR(state) {
+        //把仓库中用户的数据清空，本地存储也清空
+        state.token = ''
+        state.userInfo = ''
+        removeToken()
     }
 }
 const actions = {
@@ -57,6 +64,16 @@ const actions = {
        let result = await reqUserInfo()
         if(result.code==200){
             commit('GETUSERINFO',result.data)
+        }
+    },
+    //退出登录
+    async userLoginOut({commit}) {
+        let result = await reqLoginOut()
+        if(result.code==200) {
+            commit('CLEAR')
+            return 'ok'
+        }else{
+            return Promise.reject(new Error('faile'))
         }
     }
 }
