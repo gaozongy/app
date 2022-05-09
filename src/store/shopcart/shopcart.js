@@ -33,6 +33,19 @@ const actions = {
         } else {
             return Promise.reject(new Error('faile'))
         }
+    },
+    //删除全部选中的产品
+    deleteAllCheckedCart({dispatch,getters}) {
+        //context：小仓库，commit【提交mutations修改state】getters是【计算属性】dispatch【派发action】state【当前仓库数据】
+        let PromiseAll = []
+        getters.cartList.cartInfoList.forEach(item=>{
+            let promise = item.isChecked==1?dispatch('deleteCartListBySkuId',item.skuId):''
+            PromiseAll.push(promise)
+        })
+        //Promise.all([p1,p2,p3]) p1|p2|p3:每一个都是Promise对象，如果有一个Promise失败，那都失败，全部成功，返回的结果才为成功
+        //只要全部的p1|p2...都成功，返回的结果为成功
+        //如果有一个失败，返回的即为失败
+        return Promise.all(PromiseAll)
     }
 }
 const getters = {
