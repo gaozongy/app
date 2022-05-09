@@ -70,10 +70,9 @@ router.beforeEach(async (to,from,next)=>{
                 }
             }
         }
+    }else {
         //未登录
         next()
-    }else {
-
     }
 })
 
