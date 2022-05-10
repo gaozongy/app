@@ -4,10 +4,17 @@ import App from './App.vue'
 import TypeNav from "@/components/TypeNav";
 import Carousel from "@/components/carousel/carousel";
 import Pagination from "@/components/Pagination/pagination";
+//按需引入Element-UI
+import { Button, MessageBox} from 'element-ui';
 //第一个参数是：全局组件的名字  第二个参数是：哪一个组件
 Vue.component(TypeNav.name,TypeNav)
 Vue.component(Carousel.name,Carousel)
 Vue.component(Pagination.name,Pagination)
+//注册全局组件
+Vue.component(Button.name,Button)
+//Element-UI注册组件的时候，还有一种写法就是挂在原型上
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
 //引入路由
 import router from '@/router'
 //引入仓库
