@@ -8,6 +8,7 @@ import search from './search'
 import detail from "@/store/detail/detail";
 import shopcart from "@/store/shopcart/shopcart";
 import user from "@/store/user/user";
+import trade from "@/store/trade/trade";
 //对外暴露Store类的一个实例
 export default new Vuex.Store({
     //实现vuex仓库模块式开发存储数据
@@ -16,6 +17,7 @@ export default new Vuex.Store({
         search,
         detail,
         shopcart,
-        user
+        user,
+        trade
     }
 })
