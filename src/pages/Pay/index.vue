@@ -83,14 +83,15 @@
 
 <script>
 import QRCode from 'qrcode'
+
 export default {
   name: 'Pay',
   data() {
     return {
       payInfo: {},
-      timer:null,
+      timer: null,
       //支付码状态
-      code:''
+      code: ''
     }
   },
   computed: {
@@ -117,24 +118,47 @@ export default {
         //是否将 message 属性作为 HTML 片段处理
         dangerouslyUseHTMLString: true,
         //中间布局
-        center:true,
+        center: true,
         //是否显示取消按钮
-        showCancelButton:true,
+        showCancelButton: true,
         //取消按钮的文本内容
-        cancelButtonText:'支付遇见问题',
+        cancelButtonText: '支付遇见问题',
         //确定按钮的文本内容
-        confirmButtonText:'支付成功',
+        confirmButtonText: '支付成功',
         //MessageBox 是否显示右上角关闭按钮
-        showClose:false
+        showClose: false,
+        //关闭弹窗前的回调
+        beforeClose: (type, instance, done) => {
+          //type:区分点击的是取消还是确定按钮
+          //instance:当前组件实例
+          //done:是个函数，可手动关闭弹出的二维码弹窗
+          if (type == 'cancel') {
+            alert('请联系管理员！')
+            //清除定时器
+            clearInterval(this.timer)
+            this.timer = null
+            //关闭弹出窗
+            done()
+          } else {
+            //判断是否真的支付成功了
+            //为了方便开发，这里的判断先注释了吧
+            // if (this.code == 200) {
+              clearInterval(this.timer)
+              this.timer = null
+              done()
+              this.$router.push('/paysuccess')
+            // }
+          }
+        }
 
       });
       //你需要知道支付成功还是失败
       //如果支付成功，路由跳转，如果支付失败，提示为啥失败
       //如果没有定时器，就开启一个新的定时器
-      if(!this.timer) {
-        this.timer = setInterval(async ()=>{
+      if (!this.timer) {
+        this.timer = setInterval(async () => {
           let result = await this.$API.reqPayStatus(this.orderId)
-          if(result.code==200) {
+          if (result.code == 200) {
             //清除定时器
             clearInterval(this.timer)
             this.timer = null
@@ -145,7 +169,7 @@ export default {
             //路由跳转到支付成功的界面
             this.$router.push('/paysuccess')
           }
-        },1000)
+        }, 1000)
       }
     }
   }
