@@ -16,9 +16,9 @@ import store from './store'
 import '@/mock/mockServe'
 //引入swiper样式
 import 'swiper/css/swiper.css'
-// import {reqGetSearchInfo} from '@/api'
-// console.log(reqGetSearchInfo({}))
-
+//统一接收api文件夹里面的全部请求函数
+//统一引入
+import * as API from '@/api'
 
 Vue.config.productionTip = false
 
@@ -27,6 +27,7 @@ new Vue({
   //全局事件总线$bus配置
   beforeCreate() {
     Vue.prototype.$bus = this
+    Vue.prototype.$API = API
   },
   //注册路由信息：当这里书写router的时候，组件身上都拥有$route和$router属性
   router,

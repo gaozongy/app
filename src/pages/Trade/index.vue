@@ -34,13 +34,13 @@
             <img :src="order.imgUrl" style="width: 100px;height: 100px">
           </li>
           <li>
-            <p>{{order.skuName}}</p>
+            <p>{{ order.skuName }}</p>
             <h4>7天无理由退货</h4>
           </li>
           <li>
-            <h3>￥{{order.orderPrice}}</h3>
+            <h3>￥{{ order.orderPrice }}</h3>
           </li>
-          <li>X{{order.skuNum}}</li>
+          <li>X{{ order.skuNum }}</li>
           <li>有货</li>
         </ul>
       </div>
@@ -59,8 +59,8 @@
     <div class="money clearFix">
       <ul>
         <li>
-          <b><i>{{orderInfo.totalNum}}</i>件商品，总商品金额</b>
-          <span>¥{{orderInfo.totalAmount}}.00</span>
+          <b><i>{{ orderInfo.totalNum }}</i>件商品，总商品金额</b>
+          <span>¥{{ orderInfo.totalAmount }}.00</span>
         </li>
         <li>
           <b>返现：</b>
@@ -73,7 +73,7 @@
       </ul>
     </div>
     <div class="trade">
-      <div class="price">应付金额:　<span>¥{{orderInfo.totalAmount}}.00</span></div>
+      <div class="price">应付金额:　<span>¥{{ orderInfo.totalAmount }}.00</span></div>
       <div class="receiveInfo">
         寄送至:
         <span>{{ userDefaultAddress.fullAddress }}</span>
@@ -82,7 +82,7 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a class="subBtn" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
@@ -94,7 +94,10 @@ export default {
   name: 'Trade',
   data() {
     return {
-      msg:''
+      //买家留言
+      msg: '',
+      //订单号
+      orderId:''
     }
   },
   mounted() {
@@ -104,7 +107,7 @@ export default {
   computed: {
     ...mapState({
       addressInfo: state => state.trade.address,
-      orderInfo:state=>state.trade.orderInfo
+      orderInfo: state => state.trade.orderInfo
     }),
     //提交订单最终的地址
     userDefaultAddress() {
@@ -117,6 +120,29 @@ export default {
     changeDefault(address, addressInfo) {
       addressInfo.forEach(item => item.isDefault = 0)
       address.isDefault = 1
+    },
+    //提交订单
+    async submitOrder() {
+      //交易编码
+      let {tradeNo} = this.orderInfo
+      //其余的6个参数
+      let data = {
+        "consignee": this.userDefaultAddress.consignee,//最终收件人名字
+        "consigneeTel": this.userDefaultAddress.phoneNum,//收件人手机号
+        "deliveryAddress": this.userDefaultAddress.fullAddress,//收件人地址
+        "paymentWay": "ONLINE",//支付方式
+        "orderComment": this.msg,//买家留言
+        "orderDetailList": this.orderInfo.detailArrayList//购物车商品清单
+      }
+      //带俩参数：tradeNo;data
+      let result = await this.$API.reqSubmitOrder(tradeNo,data)
+      if(result.code==200) {
+        this.orderId = result.data
+        //路由传参跳转
+        this.$router.push('/pay?orderId='+this.orderId)
+      }else {
+        alert(result.data)
+      }
     }
   }
 }
