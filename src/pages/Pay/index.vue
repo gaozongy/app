@@ -82,11 +82,15 @@
 </template>
 
 <script>
+import QRCode from 'qrcode'
 export default {
   name: 'Pay',
   data() {
     return {
-      payInfo: {}
+      payInfo: {},
+      timer:null,
+      //支付码状态
+      code:''
     }
   },
   computed: {
@@ -106,8 +110,10 @@ export default {
       }
     },
     //弹出框
-    open() {
-      this.$alert('<strong>这是 <i>HTML</i> 片段</strong>', 'HTML 片段', {
+    async open() {
+      //生成二维码(地址)
+      let url = await QRCode.toDataURL(this.payInfo.codeUrl)
+      this.$alert(`<img src=${url} />`, '请你微信支付', {
         //是否将 message 属性作为 HTML 片段处理
         dangerouslyUseHTMLString: true,
         //中间布局
@@ -122,6 +128,25 @@ export default {
         showClose:false
 
       });
+      //你需要知道支付成功还是失败
+      //如果支付成功，路由跳转，如果支付失败，提示为啥失败
+      //如果没有定时器，就开启一个新的定时器
+      if(!this.timer) {
+        this.timer = setInterval(async ()=>{
+          let result = await this.$API.reqPayStatus(this.orderId)
+          if(result.code==200) {
+            //清除定时器
+            clearInterval(this.timer)
+            this.timer = null
+            //保存支付成功返回来的code
+            this.code = result.code
+            //关闭二维码的弹出框
+            this.$msgbox.close()
+            //路由跳转到支付成功的界面
+            this.$router.push('/paysuccess')
+          }
+        },1000)
+      }
     }
   }
 }
