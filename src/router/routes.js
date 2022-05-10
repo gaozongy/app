@@ -1,5 +1,5 @@
 //配置路由信息
-//引入路由组件
+//引入一级路由组件
 import Home from '@/pages/Home'
 import Search from '@/pages/Search'
 import Login from '@/pages/Login'
@@ -10,8 +10,32 @@ import ShopCart from "@/pages/ShopCart";
 import Trade from "@/pages/Trade";
 import Pay from "@/pages/Pay";
 import PaySuccess from "@/pages/PaySuccess";
+import Center from "@/pages/Center";
+//引入二级路由组件
+import myOrder from "@/pages/Center/MyOrder/myOrder";
+import GroupOrder from "@/pages/Center/GroupOrder/groupOrder";
 
 export default [
+    {
+        path: '/center',
+        component: Center,
+        meta: {show: true},
+        //二级路由
+        children:[
+            {
+                path:'myorder',
+                component:myOrder
+            },
+            {
+                path:'grouporder',
+                component: GroupOrder
+            },
+            {
+                path:'/center',
+                redirect:'/center/myorder'
+            }
+        ]
+    },
     {
         path: '/paysuccess',
         component: PaySuccess,
