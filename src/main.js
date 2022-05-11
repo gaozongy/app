@@ -37,6 +37,13 @@ Vue.use(VueLazyload,{
 
 Vue.config.productionTip = false
 
+
+//引入自定义插件
+import myPlugins from "@/plugins/myPlugins";
+Vue.use(myPlugins,{
+  name:'upper'
+})
+
 new Vue({
   render: h => h(App),
   //全局事件总线$bus配置
