@@ -26,6 +26,14 @@ import 'swiper/css/swiper.css'
 //统一接收api文件夹里面的全部请求函数
 //统一引入
 import * as API from '@/api'
+import atm from '@/assets/1.gif'
+//引入插件
+import VueLazyload from "vue-lazyload";
+//注册插件
+Vue.use(VueLazyload,{
+  //懒加载默认的图片
+  loading:atm
+})
 
 Vue.config.productionTip = false
 
